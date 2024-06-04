@@ -256,6 +256,7 @@ def send_msg(title, content):
 # 消息推送
 def send_msg_ft(title, content):
     if config.FT_PUSH_TOKEN is None:
+        logging.info(f'通知推送结果：FT_PUSH_TOKEN为空')
         return
     url = f'https://sctapi.ftqq.com/{config.FT_PUSH_TOKEN}.send'
     r = requests.post(url, {'title': title, 'desp': content})
