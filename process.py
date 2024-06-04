@@ -10,9 +10,6 @@ from encrypt import Encrypt
 import requests
 import hashlib
 import logging
-import os
-import urllib.parse
-import urllib.request
 
 AES_KEY = 'qbhajinldepmucsonaaaccgypwuvcjaa'
 AES_IV = '2018534749963515'
@@ -260,12 +257,9 @@ def send_msg(title, content):
 def send_msg_ft(title, content):
     if config.FT_PUSH_TOKEN is None:
         return
-    postdata = urllib.parse.urlencode({'title': title, 'desp': content}).encode('utf-8')
     url = f'https://sctapi.ftqq.com/{config.FT_PUSH_TOKEN}.send'
-    req = urllib.request.Request(url, data=postdata, method='POST')
-    with urllib.request.urlopen(req) as response:
-        result = response.read().decode('utf-8')
-        logging.info(f'通知推送结果：{result}')
+    r = requests.post(url, {'title': title, 'desp': content})
+    logging.info(f'通知推送结果：{r.status_code, r.text}')
 
 
 # 核心代码，执行预约
